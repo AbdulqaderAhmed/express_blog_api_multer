@@ -14,7 +14,7 @@ export const register = expressAsyncHandler(async (req, res) => {
     const availableUsername = await User.findOne({ username });
     const availableEmail = await User.findOne({ email });
 
-    if (availablePassword) {
+    if (availableEmail) {
       res.status(409);
       throw new Error("Email already exists!");
     } else if (availableUsername) {
@@ -24,10 +24,19 @@ export const register = expressAsyncHandler(async (req, res) => {
       const user = await User.create({
         username,
         email,
-        hashPassword,
+        password: hashPassword,
       });
 
-      res.status(201).json({ message: "Registerd successfully!", user });
+      if (user) {
+        res.status(201).json({
+          message: "Registerd successfully!",
+          user: {
+            username: user.username,
+            email: user.email,
+            id: user.id,
+          },
+        });
+      }
     }
   }
 });
@@ -49,6 +58,8 @@ export const login = expressAsyncHandler(async (req, res) => {
     };
     const accessToken = jwt.sign(userInfo, secret, { expiresIn: "24h" });
 
-    res.status(201).json({ message: "Logged in successfully!", accessToken });
+    user.token = accessToken;
+
+    res.status(201).json({ message: "Logged in successfully!", user });
   }
 });

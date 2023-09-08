@@ -3,7 +3,6 @@ import "dotenv/config";
 import cors from "cors";
 import { dbConnection } from "./config/dbConnection.js";
 import { errorHandler } from "./src/middlewares/errorHandler.js";
-import { tokenValidation } from "./src/middlewares/tokenValidation.js";
 import { auth } from "./src/routers/userRoute.js";
 import { router } from "./src/routers/blogRouter.js";
 
@@ -15,8 +14,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
-
-app.use(tokenValidation);
 
 app.use("/api/auth", auth);
 app.use("/api/blog", router);

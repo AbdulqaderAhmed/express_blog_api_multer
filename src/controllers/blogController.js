@@ -2,7 +2,7 @@ import expressAsyncHandler from "express-async-handler";
 import { Blog } from "../models/blogModel.js";
 
 export const getAllBlog = expressAsyncHandler(async (req, res) => {
-  const blog = await Blog.find().sort({ createdAt: "decsending" });
+  const blog = await Blog.find().sort({ createdAt: "descending" });
   res.status(200).json(blog);
 });
 
@@ -18,22 +18,22 @@ export const getBlog = expressAsyncHandler(async (req, res) => {
 });
 
 export const createBlog = expressAsyncHandler(async (req, res) => {
-  const { title, description, image } = req.body;
-  if (!title || !description || !image) {
+  const { title, description } = req.body;
+
+  if (!title || !description) {
     res.status(400);
     throw new Error("All fields are required!");
   } else {
     if (req.file) {
-      image = req.file.filename;
       await Blog.create({
         user_id: req.user.id,
         title,
         description,
-        image,
+        image: req.file.filename,
       });
 
-      const blog = await Blog.find().sort({ createdAt: "decsending" });
-      res.status(201).json({ message: "Blog created!", blog });
+      const blog = await Blog.find().sort({ createdAt: "descending" });
+      res.status(201).json(blog);
     } else {
       res.status(400);
       throw new Error("Invalid file");
@@ -52,8 +52,8 @@ export const updateBlog = expressAsyncHandler(async (req, res) => {
       res.status(404);
       throw new Error("Page not found!");
     } else {
-      const blog = await Blog.find().sort({ createdAt: "decsending" });
-      res.status(202).json({ message: "Blog updated!", blog });
+      const blog = await Blog.find().sort({ createdAt: "descending" });
+      res.status(202).json(blog);
     }
   }
 });
@@ -69,8 +69,8 @@ export const deleteBlog = expressAsyncHandler(async (req, res) => {
       res.status(404);
       throw new Error("Page not found!");
     } else {
-      const blog = await Blog.find().sort({ createdAt: "decsending" });
-      res.status(202).json({ message: "Blog deleted!", blog });
+      const blog = await Blog.find().sort({ createdAt: "descending" });
+      res.status(202).json(blog);
     }
   }
 });

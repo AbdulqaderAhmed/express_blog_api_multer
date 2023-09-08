@@ -21,5 +21,8 @@ export const errorHandler = (err, req, res, next) => {
     case constants.SERVER_ERROR:
       res.json({ title: "Server error", message: err.message });
       break;
+    default:
+      console.log("no error");
+      break;
   }
 };

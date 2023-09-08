@@ -7,8 +7,11 @@ import {
   getBlog,
   updateBlog,
 } from "../controllers/blogController.js";
+import { tokenValidation } from "../middlewares/tokenValidation.js";
 
 export const router = express.Router();
+
+router.use(tokenValidation);
 
 router.use(uploadMiddleware.single("image"));
 
