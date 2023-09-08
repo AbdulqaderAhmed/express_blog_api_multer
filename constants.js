@@ -1,0 +1,8 @@
+export const constants = {
+  BAD_REQUEST: 400,
+  UNAUTHORIZE: 401,
+  FORBIDDEN: 403,
+  PAGE_NOT_FOUND: 404,
+  DUPLICATE: 409,
+  SERVER_ERROR: 500,
+};
